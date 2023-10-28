@@ -1,0 +1,200 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-step-form</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{
+  margin: 0px;
+  background: #fde2e2;
+}
+.form{
+  
+  height: 100%;
+  width: 100%;
+}
+
+.tabs{
+  display: none;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.input{
+  background: #fde2e2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: grey;
+  width: 30%;
+  /* margin: 10px; */
+  padding: 15px 10px 20px 10px;
+  border: 0px;
+  border-bottom: 2px solid black;
+  
+}
+
+.drag{
+  margin-bottom: 30px;
+  padding: 30px;
+  width: 40%;
+  height: 300px;
+  text-align: center;
+  color: #ccc;
+  line-height: 300px;
+  border: 2px dashed grey;
+}
+
+.dragzone{
+  color: black;
+  border: 2px dashed black;
+}
+
+.btn{
+  padding: 10px;
+  width: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid black;
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.btn1{
+  margin: 20px;
+  position: absolute;
+  top: 90%;
+  left: 40%;
+}
+
+.btn2{
+  margin: 20px;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+}
+
+h1{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+  </style>
+</head>
+<body>
+  <form action="" class="form">
+    <div class="tabs">
+      <h1>Step 1</h1>
+
+      <input class="input" type="text " placeholder="FirstName..">
+      <input class="input"  type="text" name="" id="" placeholder="LastName..">
+      <input class="input"  type="date" name="" id="" placeholder="Birth-date">
+      <input class="input"  type="text" name="" id="" placeholder="Country..">
+    </div>
+
+    <div class="tabs">
+      <h1>Step 2</h1>
+
+      <div class="drag" id="dragzone" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)" ondragleave="dragleave()" > Drag file here....</div>
+      <input class="input "  type="file" name="" id="" >
+    </div>
+
+    <div class="tabs">
+      <h1>Step 3</h1>
+
+      <input class="input"  type="email" name="" id="" placeholder="email">
+      <input class="input"  type="password" name="" id="" placeholder="Password">
+      <input class="input"  type="password" name="" id="" placeholder="Re-enter Password">
+    </div>
+
+    <div class="tabs">
+        <h1>Thank You..</h1>
+    </div>
+    
+      <input class="btn1 btn" id="prev" type="button" value="< previous">
+      <input class="btn2 btn" id="next" type="button" value="next >">
+    
+  </form>
+  <script src="script.js"></script>
+  <script>
+    let x = 0;
+display(x);
+
+function display(n){
+  let tabs = document.getElementsByClassName("tabs");
+  tabs[n].style.display = "flex";
+
+  if(n==0){
+    document.getElementById("prev").style.display = "none"
+    document.getElementById("next").value = 'next >';
+
+  }
+  if(n==1){
+    document.getElementById("prev").style.display = "block"
+    document.getElementById("next").value = 'next >';
+  }
+  if(n==2){
+    document.getElementById("next").value = 'Submit';
+  }
+  if(n==3){
+    document.getElementById("prev").style.display = "none"
+    document.getElementById("next").style.display = "none"
+  }
+}
+
+let prev = document.getElementById("prev");
+let next = document.getElementById("next");
+
+prev.addEventListener('click', function(){
+  // console.log("hi");
+  let tabs = document.getElementsByClassName("tabs");
+  tabs[x].style.display = "none";
+  x--;
+  display(x);
+})
+
+next.addEventListener('click',function(){
+  let tabs = document.getElementsByClassName("tabs");
+  tabs[x].style.display = "none";
+  x++;
+  display(x);
+})
+
+function dropHandler(ev) {
+  console.log('File(s) dropped');
+
+  ev.preventDefault();
+
+  if (ev.dataTransfer.items) {
+    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      if (ev.dataTransfer.items[i].kind === 'file') {
+        var file = ev.dataTransfer.items[i].getAsFile();
+        var drag = document.getElementById("dragzone");
+        drag.innerHTML = file.name;
+      }
+    }
+  } else {
+    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+    }
+  }
+}
+function dragOverHandler(ev) {
+  var drag = document.getElementById("dragzone");
+  drag.classList.add("dragzone");
+  console.log('File(s) in drop zone'); 
+
+  ev.preventDefault();
+}
+function dragleave(){
+  var drag = document.getElementById("dragzone");
+  drag.classList.remove("dragzone");
+}
+
+  </script>
+</body>
+</html>
